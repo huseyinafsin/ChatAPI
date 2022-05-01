@@ -4,12 +4,16 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace ChatAPI.Hubs
 {
-    //[Authorize]
+    [Authorize]
     public class ChatHub :Hub
     {
-        public async Task SendMessage(string user, string message)
+        [Authorize]
+        public class MessageHub : Hub<IMessageHub>
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            public async Task SendMessage(string message)
+            {
+                await Clients.Others.ReceiveMessage(message);
+            }
         }
     }
 }

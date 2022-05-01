@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text;
 using ChatAPI.Data;
 using ChatAPI.Hubs;
+using ChatAPI.Jwt;
 using ChatAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<ITokenHelper, JwtHelper>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(x =>
 {
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), options =>
@@ -35,30 +38,37 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = "https://github.com/huseyinafsin",
             ValidAudience = "https://github.com/huseyinafsin",
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MOGQodmQdS1DoPoSMkjB2tq4A7gr2ZMCmFso5swounToBXZCXfmXk6FdPvaHQ2l3")),
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes("MOGQodmQdS1DoPoSMkjB2tq4A7gr2ZMCmFso5swounToBXZCXfmXk6FdPvaHQ2l3")),
             ClockSkew = TimeSpan.Zero
         };
-    })
-    .AddJwtBearer(options =>
-    {
-     
-        options.Authority = "https://github.com/huseyinafsin";
-        options.Events = new JwtBearerEvents()
-        {
-            OnMessageReceived = context =>
-            {
-                var accessToken = context.Request.Query["access_token"];
-                var path = context.HttpContext.Request.Path;
-                if (!string.IsNullOrEmpty(accessToken) &&
-                    (path.StartsWithSegments("/chathub")))
-                {
-                    // Read the token out of the query string
-                    context.Token = accessToken;
-                }
-                return Task.CompletedTask;
-            }
-        };
     });
+
+//    #region MyRegion
+
+//    .AddJwtBearer(options =>
+//    {
+     
+//        options.Authority = "https://github.com/huseyinafsin";
+//        options.Events = new JwtBearerEvents()
+//        {
+//            OnMessageReceived = context =>
+//            {
+//                var accessToken = context.Request.Query["access_token"];
+//                var path = context.HttpContext.Request.Path;
+//                if (!string.IsNullOrEmpty(accessToken) &&
+//                    (path.StartsWithSegments("/chathub")))
+//                {
+//                    // Read the token out of the query string
+//                    context.Token = accessToken;
+//                }
+//                return Task.CompletedTask;
+//            }
+//        };
+//    });
+
+//#endregion
 builder.Services.AddRazorPages();
 
 builder.Services.AddCors(options
@@ -94,8 +104,8 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRazorPages();
-    endpoints.MapHub<ChatHub>("/auth");
-    endpoints.MapHub<ChatHub>("/chathub");
+    endpoints.MapHub<AuthHub>("/auth");
+    endpoints.MapHub<ChatHub>("/chat");
     app.MapControllers();
 
 });
