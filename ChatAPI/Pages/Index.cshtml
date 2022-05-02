@@ -4,39 +4,45 @@
     Layout = "_Layout";
 }
 
-<div class="container">
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div class="col-2">Token</div>
-        <div class="col-4"><input type="text" id="tokenInput" /></div>
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link active" href="create.html">Create User</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="login.html">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="chatroom.html">Chat Room</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" style="cursor: pointer;" id="logOut">Logout</a>
+    </li>
+</ul>
+<div class="row" id="connectionMessage" style="display: none;">
+    <div class="col-md-3">
     </div>
-    <div class="row">
-        <div class="col-2">User</div>
-        <div class="col-4"><input type="text" id="userInput" /></div>
-    </div>
-    <div class="row">
-        <div class="col-2">Message</div>
-        <div class="col-4"><input type="text" id="messageInput" /></div>
-    </div>
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div class="col-6">
-            <input type="button" id="sendButton" value="Send Message" />
+    <div class="col-md-6">
+        <div role="alert">
+ 
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <hr />
+    <div class="col-md-3">
     </div>
 </div>
 <div class="row">
-    <div class="col-6">
-        <ul id="messagesList"></ul>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h2>Chat Room</h2>
+        <div class="form-group">
+            <label>Message</label>
+            <textarea class="form-control" id="txtMessage" placeholder="Mesajınızı giriniz." rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnSendMessage">Send Message</button>
     </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-3"></div>
+    <div class="col-md-6" id="divMessage">
+ 
+    </div>
+    <div class="col-md-3"></div>
 </div>
-<script src="js/signalr.js" asp-append-version="true"></script>
-<script src="~/js/signalr.js" asp-append-version="true"></script>
-<script src="~/js/chat.js" asp-append-version="true"></script>
-
-

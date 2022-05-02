@@ -23,13 +23,22 @@ namespace ChatAPI.Hubs
 
         public AuthHub(UserManager<AppUser> userManager, RoleManager<IdentityRole<int>> roleManager, ITokenHelper tokenHelper)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _tokenHelper = tokenHelper;
+            try
+            {
+                _userManager = userManager;
+                _roleManager = roleManager;
+                _tokenHelper = tokenHelper;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+       
         }
 
 
-        public async Task Login([FromBody]UserForLogin model)
+        public async Task Login(UserForLogin model)
         {
       
 
@@ -39,15 +48,17 @@ namespace ChatAPI.Hubs
             if (user != null)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
+                var roles = new List<string> {"Admin", "User"};
 
-                var accessToken = _tokenHelper.CreateToken(user,userRoles);
+                token = _tokenHelper.CreateToken(user,roles);
 
 
             }
-            await Clients.Caller.Login(user != null ? token : null);
+
+            await Clients.Caller.Login(token);
         }
 
-        public async Task Create([FromBody]UserForRegister userForRegister)
+        public async Task Register([FromBody]UserForRegister userForRegister)
         {
             AppUser user = new AppUser()
             {
@@ -62,9 +73,9 @@ namespace ChatAPI.Hubs
                 await Clients.Caller.Create(false);
 
             if (!await _roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
+                await _roleManager.CreateAsync(new IdentityRole<int>(UserRoles.Admin.ToString()));
             if (!await _roleManager.RoleExistsAsync(UserRoles.User.ToString()))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User.ToString()));
+                await _roleManager.CreateAsync(new IdentityRole<int>(UserRoles.User.ToString()));
 
 
             if (await _roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))

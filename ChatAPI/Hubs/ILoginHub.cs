@@ -6,7 +6,7 @@ namespace ChatAPI.Hubs
 {
     public interface ILoginHub
     {
-        Task Login(string token);
+        Task Login(AccessToken token);
         Task Create(bool result);
     }
 }

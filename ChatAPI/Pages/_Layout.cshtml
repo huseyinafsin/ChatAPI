@@ -8,6 +8,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -42,11 +43,17 @@
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/signalr.js" asp-append-version="true"></script>
         <script src="~/js/chat.js" asp-append-version="true"></script>
+        
+        <script src="~/js/signalr.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="bootstrap.min.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -64,6 +71,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/js/signalr.js" asp-append-version="true"></script>
         <script src="~/js/chat.js" asp-append-version="true"></script>
+      
     </environment>
 
     @RenderSection("Scripts", required: false)
